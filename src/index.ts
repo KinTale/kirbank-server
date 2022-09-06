@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from 'dotenv'
 import authRouter from './routes/auth'
 import userRouter from './routes/user'
-import transactionRouter from './routes/transaction'
+// import transactionRouter from './routes/transaction'
 
 dotenv.config()
 const app: Express = express();
@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/', authRouter)
 app.use('/user', userRouter)
-app.use('/transaction', transactionRouter)
+// app.use('/transaction', transactionRouter)
 
 app.get('/', (req:Request, res: Response)=>{
     res.send('Kirbank server is running')

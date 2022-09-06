@@ -8,7 +8,7 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const auth_1 = __importDefault(require("./routes/auth"));
 const user_1 = __importDefault(require("./routes/user"));
-const transaction_1 = __importDefault(require("./routes/transaction"));
+// import transactionRouter from './routes/transaction'
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 4000;
@@ -17,7 +17,7 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use('/', auth_1.default);
 app.use('/user', user_1.default);
-app.use('/transaction', transaction_1.default);
+// app.use('/transaction', transactionRouter)
 app.get('/', (req, res) => {
     res.send('Kirbank server is running');
 });

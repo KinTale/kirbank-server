@@ -1,8 +1,8 @@
-import { Router } from 'express'
-import { addTransaction } from '../controllers/transaction'
+// import { Router } from 'express'
+// import { addTransaction } from '../controllers/transaction'
 
-const router = Router()
+// const router = Router()
 
-router.post('/', addTransaction)
+// router.post('/', addTransaction)
 
-export default router
+// export default router
