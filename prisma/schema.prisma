@@ -22,8 +22,6 @@ model User {
 model Transaction {
   id       Int      @id @default(autoincrement())
   title    String
-  moneyIn  Int?
-  moneyOut Int?
   amount   Int
   date     DateTime
   user     User     @relation(fields: [userId], references: [id])
