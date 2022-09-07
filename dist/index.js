@@ -2,25 +2,26 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const cors_1 = __importDefault(require("cors"));
-const dotenv_1 = __importDefault(require("dotenv"));
-const auth_1 = __importDefault(require("./routes/auth"));
-const user_1 = __importDefault(require("./routes/user"));
+exports.__esModule = true;
+var express_1 = __importDefault(require("express"));
+var cors_1 = __importDefault(require("cors"));
+var dotenv_1 = __importDefault(require("dotenv"));
+var auth_1 = __importDefault(require("./routes/auth"));
+var user_1 = __importDefault(require("./routes/user"));
 // import transactionRouter from './routes/transaction'
-dotenv_1.default.config();
-const app = (0, express_1.default)();
-const port = process.env.PORT || 4000;
-app.use((0, cors_1.default)());
-app.use(express_1.default.json());
-app.use(express_1.default.urlencoded({ extended: true }));
-app.use('/', auth_1.default);
-app.use('/user', user_1.default);
+dotenv_1["default"].config();
+var app = (0, express_1["default"])();
+var port = process.env.PORT || 4000;
+app.use((0, cors_1["default"])());
+app.use(express_1["default"].json());
+app.use(express_1["default"].urlencoded({ extended: true }));
+app.use('/', auth_1["default"]);
+app.use('/user', user_1["default"]);
 // app.use('/transaction', transactionRouter)
-app.get('/', (req, res) => {
+app.get('/', function (req, res) {
     res.send('Kirbank server is running');
 });
-app.listen(port, () => {
-    console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+app.listen(port, function () {
+    console.log("\u26A1\uFE0F[server]: Server is running at http://localhost:".concat(port));
 });
+//# sourceMappingURL=index.js.map

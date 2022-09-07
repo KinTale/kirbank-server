@@ -2,10 +2,9 @@ import express, { Request, Response } from "express";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import prisma from "@prisma/client"
+import { dbClient } from "../utils/dbClient";
 
 const secret = process.env.JWT_SECRET
-
-const dbClient = new prisma.PrismaClient()
 
 export const login = async (req : Request, res : Response) => {
 

@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import bcrypt from 'bcrypt'
-import prisma from "@prisma/client"
 import validator from 'email-validator'
+import { dbClient } from "../utils/dbClient";
 
-const dbClient = new prisma.PrismaClient()
 export const getUser = async (req: Request, res: Response) => {
   try {
     const memberList = await dbClient.user.findMany()
