@@ -43,7 +43,6 @@ exports.createUser = exports.getUser = void 0;
 var bcrypt_1 = __importDefault(require("bcrypt"));
 var email_validator_1 = __importDefault(require("email-validator"));
 var dbClient_1 = require("../utils/dbClient");
-// const dbClient = new prisma.PrismaClient()
 var getUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var memberList, e_1;
     return __generator(this, function (_a) {
