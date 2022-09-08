@@ -55,8 +55,8 @@ var getUser = function (req, res) { return __awaiter(void 0, void 0, void 0, fun
                 return [2 /*return*/, res.status(200).json({ data: memberList })];
             case 2:
                 e_1 = _a.sent();
-                console.log('ERROR', e_1);
-                return [2 /*return*/, res.status(500).json('unable to get users')];
+                console.log("ERROR", e_1);
+                return [2 /*return*/, res.status(500).json("unable to get users")];
             case 3: return [2 /*return*/];
         }
     });
@@ -81,12 +81,12 @@ var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                 existingUser = _a.sent();
                 if (existingUser) {
                     return [2 /*return*/, res.status(400).json({
-                            status: 'fail, email already in use'
+                            status: "fail, email already in use"
                         })];
                 }
                 if (!email_validator_1["default"].validate(req.body.email)) {
                     return [2 /*return*/, res.status(400).json({
-                            status: 'fail, invalid email address'
+                            status: "fail, invalid email address"
                         })];
                 }
                 return [4 /*yield*/, dbClient_1.dbClient.user.create({
@@ -99,14 +99,14 @@ var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
             case 4:
                 createdUser = _a.sent();
                 return [2 /*return*/, res.status(200).json({
-                        status: 'success',
+                        status: "success",
                         data: createdUser
                     })];
             case 5:
                 error_1 = _a.sent();
                 console.log(error_1);
                 return [2 /*return*/, res.status(500).json({
-                        status: 'fail, server error'
+                        status: "fail, server error"
                     })];
             case 6: return [2 /*return*/];
         }

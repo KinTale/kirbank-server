@@ -39,7 +39,9 @@ export const login = async (req : Request, res : Response) => {
 
     const token = generateJwt(foundUser.id)
     return res.status(200).json({ token,
-        status: 'success'
+       data: foundUser ,
+      status: 'success'
+       
       })
 
   } catch (e) {
