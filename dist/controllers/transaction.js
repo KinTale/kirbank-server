@@ -38,12 +38,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.addTransaction = void 0;
 var dbClient_1 = require("../utils/dbClient");
-// interface Transaction {
-//   title: string,
-//   amount: number,
-//   date: Date,
-//   userId: number
-// }
 var addTransaction = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, title, amount, date, userId, createdTransaction, error_1;
     return __generator(this, function (_b) {

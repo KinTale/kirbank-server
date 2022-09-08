@@ -65,7 +65,7 @@ var validateAuth = function (req, res, next) { return __awaiter(void 0, void 0, 
                 header = req.header("authorization");
                 if (!header)
                     return [2 /*return*/, res.status(401).json({ authentication: "Missing header" })];
-                _a = header.split(""), type = _a[0], token = _a[1];
+                _a = header.split(" "), type = _a[0], token = _a[1];
                 isTypeValid = validateTokenType(type);
                 if (!isTypeValid)
                     return [2 /*return*/, res.status(401).json({ authentication: "invalid token type" })];
@@ -82,7 +82,8 @@ var validateAuth = function (req, res, next) { return __awaiter(void 0, void 0, 
                     })];
             case 1:
                 foundUser = _b.sent();
-                //   req.userId = foundUser
+                if (foundUser != null)
+                    req.userId = foundUser.id;
                 next();
                 return [2 /*return*/];
         }

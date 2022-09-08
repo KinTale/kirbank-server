@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { dbClient } from "../utils/dbClient";
+import { CustomRequest } from "../utils/interface";
 
 const secret = process.env.JWT_SECRET as string;
 
@@ -18,7 +19,7 @@ const verifyToken = (token: string): boolean | void => {
 };
 
 export const validateAuth = async (
-  req: Request,
+  req: CustomRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -26,9 +27,9 @@ export const validateAuth = async (
   if (!header)
     return res.status(401).json({ authentication: "Missing header" });
 
-  const [type, token] = header.split("");
+  const [type, token] = header.split(" ");
 
-  const isTypeValid : boolean = validateTokenType(type);
+  const isTypeValid: boolean = validateTokenType(type);
   if (!isTypeValid)
     return res.status(401).json({ authentication: "invalid token type" });
 
@@ -44,6 +45,7 @@ export const validateAuth = async (
       id: parseInt(decodedToken),
     },
   });
-//   req.userId = foundUser
-  next()
+
+  if (foundUser != null) req.userId = foundUser.id;
+  next();
 };

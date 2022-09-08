@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { dbClient } from "../utils/dbClient";
+import { CustomRequest } from "../utils/interface";
 
-export const addTransaction = async (req: Request, res: Response) => {
+export const addTransaction = async (req: CustomRequest, res: Response) => {
   const { title, amount, date, userId } = req.body;
 
   try {
