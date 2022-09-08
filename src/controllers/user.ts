@@ -3,12 +3,6 @@ import bcrypt from "bcrypt";
 import validator from "email-validator";
 import { dbClient } from "../utils/dbClient";
 
-interface Register {
-  username: string;
-  email: string;
-  password: string;
-}
-
 export const getUser = async (req: Request, res: Response) => {
   try {
     const memberList = await dbClient.user.findMany();
@@ -37,13 +31,14 @@ export const createUser = async (req: Request, res: Response) => {
       });
     }
 
-    const createdUser: Register = await dbClient.user.create({
+    const createdUser = await dbClient.user.create({
       data: {
         username: req.body.username,
         email: req.body.email,
         password: passwordHash,
       },
     });
+    
     return res.status(200).json({
       status: "success",
       data: createdUser,

@@ -1,18 +1,11 @@
 import { Request, Response } from "express";
 import { dbClient } from "../utils/dbClient";
 
-interface Transaction {
-  title: string,
-  amount: number,
-  date: Date,
-  userId: number
-}
-
 export const addTransaction = async (req: Request, res: Response) => {
   const { title, amount, date, userId } = req.body;
 
   try {
-    const createdTransaction: Transaction = await dbClient.transaction.create({
+    const createdTransaction = await dbClient.transaction.create({
       data: {
         title: title,
         amount: amount,
