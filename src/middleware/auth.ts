@@ -28,7 +28,7 @@ export const validateAuth = async (
 
   const [type, token] = header.split("");
 
-  const isTypeValid = validateTokenType(type);
+  const isTypeValid : boolean = validateTokenType(type);
   if (!isTypeValid)
     return res.status(401).json({ authentication: "invalid token type" });
 
