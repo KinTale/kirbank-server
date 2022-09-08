@@ -36,8 +36,34 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.addTransaction = void 0;
+exports.addTransaction = exports.getTransactions = void 0;
 var dbClient_1 = require("../utils/dbClient");
+var getTransactions = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var userId, transactionList, e_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                userId = req.userId;
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, dbClient_1.dbClient.transaction.findMany({
+                        where: {
+                            userId: userId
+                        }
+                    })];
+            case 2:
+                transactionList = _a.sent();
+                return [2 /*return*/, res.json({ list: transactionList })];
+            case 3:
+                e_1 = _a.sent();
+                console.log(e_1);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+exports.getTransactions = getTransactions;
 var addTransaction = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, title, amount, date, userId, createdTransaction, error_1;
     return __generator(this, function (_b) {

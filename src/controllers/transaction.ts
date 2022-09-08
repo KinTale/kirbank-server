@@ -2,9 +2,23 @@ import { Request, Response } from "express";
 import { dbClient } from "../utils/dbClient";
 import { CustomRequest } from "../utils/interface";
 
+export const getTransactions = async (req: CustomRequest, res: Response) => {
+  const userId = req.userId;
+  try {
+    const transactionList = await dbClient.transaction.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+   
+    return res.json({ list: transactionList });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export const addTransaction = async (req: CustomRequest, res: Response) => {
   const { title, amount, date, userId } = req.body;
-
   try {
     const createdTransaction = await dbClient.transaction.create({
       data: {

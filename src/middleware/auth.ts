@@ -37,15 +37,21 @@ export const validateAuth = async (
   if (!isTokenVerified)
     return res
       .status(401)
-      .json({ authentication: "unverified or missing token" });
+      .json({
+        authentication: "unverified or missing token",
+        isTokenVerified: token,
+      });
 
-  const decodedToken = jwt.decode(token) as string;
+  const decodedToken = jwt.decode(token) as jwt.JwtPayload;
+  console.log({ decoded: decodedToken });
+  
   const foundUser = await dbClient.user.findFirst({
     where: {
-      id: parseInt(decodedToken),
+      id: decodedToken.userId,
     },
   });
 
   if (foundUser != null) req.userId = foundUser.id;
+  console.log({ midleware: req.userId });
   next();
 };
