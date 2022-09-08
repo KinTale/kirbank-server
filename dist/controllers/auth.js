@@ -52,7 +52,7 @@ var login = function (req, res) { return __awaiter(void 0, void 0, void 0, funct
                 _a = req.body, email = _a.email, password = _a.password;
                 if (!email) {
                     return [2 /*return*/, res.status(400).json({
-                            status: 'fail'
+                            status: "fail"
                         })];
                 }
                 _b.label = 1;
@@ -67,7 +67,7 @@ var login = function (req, res) { return __awaiter(void 0, void 0, void 0, funct
                 foundUser = _b.sent();
                 if (!foundUser) {
                     return [2 /*return*/, res.status(401).json({
-                            status: 'fail',
+                            status: "fail",
                             message: "User not found"
                         })];
                 }
@@ -76,18 +76,24 @@ var login = function (req, res) { return __awaiter(void 0, void 0, void 0, funct
                 areCredentialsValid = _b.sent();
                 if (!areCredentialsValid) {
                     return [2 /*return*/, res.status(401).json({
-                            status: 'fail',
+                            status: "fail",
                             message: "Incorrect details"
                         })];
                 }
                 token = generateJwt(foundUser.id);
-                return [2 /*return*/, res.status(200).json({ token: token, data: foundUser,
-                        status: 'success' })];
+                return [2 /*return*/, res
+                        .status(200)
+                        .json({
+                        token: token,
+                        userId: foundUser.id,
+                        username: foundUser.username,
+                        status: "success"
+                    })];
             case 4:
                 e_1 = _b.sent();
                 // console.error('error processing login', e.message)
                 return [2 /*return*/, res.status(500).json({
-                        status: 'fail',
+                        status: "fail",
                         message: "500 bad request"
                     })];
             case 5: return [2 /*return*/];
@@ -96,7 +102,9 @@ var login = function (req, res) { return __awaiter(void 0, void 0, void 0, funct
 }); };
 exports.login = login;
 function generateJwt(userId) {
-    return jsonwebtoken_1["default"].sign({ userId: userId }, secret, { expiresIn: process.env.JWT_EXPIRY });
+    return jsonwebtoken_1["default"].sign({ userId: userId }, secret, {
+        expiresIn: process.env.JWT_EXPIRY
+    });
 }
 function validateCredentials(password, user) {
     return __awaiter(this, void 0, void 0, function () {
