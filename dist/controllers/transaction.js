@@ -58,14 +58,14 @@ var addTransaction = function (req, res) { return __awaiter(void 0, void 0, void
             case 2:
                 createdTransaction = _b.sent();
                 return [2 /*return*/, res.status(200).json({
-                        status: 'success',
+                        status: "success",
                         data: createdTransaction
                     })];
             case 3:
                 error_1 = _b.sent();
                 console.log(error_1);
                 return [2 /*return*/, res.status(500).json({
-                        status: 'fail, server error'
+                        status: "fail, server error"
                     })];
             case 4: return [2 /*return*/];
         }
