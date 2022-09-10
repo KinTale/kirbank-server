@@ -43,7 +43,7 @@ var getTransactions = function (req, res) { return __awaiter(void 0, void 0, voi
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                userId = req.userId;
+                userId = res.locals.userId;
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
@@ -69,7 +69,8 @@ var addTransaction = function (req, res) { return __awaiter(void 0, void 0, void
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                _a = req.body, title = _a.title, amount = _a.amount, date = _a.date, userId = _a.userId;
+                _a = req.body, title = _a.title, amount = _a.amount, date = _a.date;
+                userId = res.locals.userId;
                 _b.label = 1;
             case 1:
                 _b.trys.push([1, 3, , 4]);
@@ -89,9 +90,9 @@ var addTransaction = function (req, res) { return __awaiter(void 0, void 0, void
                     })];
             case 3:
                 error_1 = _b.sent();
-                console.log(error_1);
+                console.log(error_1, req.body);
                 return [2 /*return*/, res.status(500).json({
-                        status: "fail, server error"
+                        status: "fail, server error", req: req.body
                     })];
             case 4: return [2 /*return*/];
         }

@@ -3,7 +3,7 @@ import { dbClient } from "../utils/dbClient";
 import { CustomRequest } from "../utils/interface";
 
 export const getTransactions = async (req: CustomRequest, res: Response) => {
-  const userId = req.userId;
+  const userId = res.locals.userId
   try {
     const transactionList = await dbClient.transaction.findMany({
       where: {
@@ -18,7 +18,8 @@ export const getTransactions = async (req: CustomRequest, res: Response) => {
 };
 
 export const addTransaction = async (req: CustomRequest, res: Response) => {
-  const { title, amount, date, userId } = req.body;
+  const { title, amount, date } = req.body;
+  const userId = res.locals.userId
   try {
     const createdTransaction = await dbClient.transaction.create({
       data: {
@@ -34,9 +35,9 @@ export const addTransaction = async (req: CustomRequest, res: Response) => {
       data: createdTransaction,
     });
   } catch (error) {
-    console.log(error);
+    console.log(error, req.body);
     return res.status(500).json({
-      status: "fail, server error",
+      status: "fail, server error", req: req.body
     });
   }
 };

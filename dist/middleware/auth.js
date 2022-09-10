@@ -87,8 +87,8 @@ var validateAuth = function (req, res, next) { return __awaiter(void 0, void 0, 
             case 1:
                 foundUser = _b.sent();
                 if (foundUser != null)
-                    req.userId = foundUser.id;
-                console.log({ midleware: req.userId });
+                    res.locals.userId = foundUser.id;
+                console.log({ midleware: res.locals.userId });
                 next();
                 return [2 /*return*/];
         }
