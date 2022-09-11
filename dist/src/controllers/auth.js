@@ -39,60 +39,94 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.validateAuth = void 0;
+exports.login = void 0;
+var bcrypt_1 = __importDefault(require("bcrypt"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var dbClient_1 = require("../utils/dbClient");
 var secret = process.env.JWT_SECRET;
-var validateTokenType = function (type) {
-    if (!type)
-        return false;
-    if (type.toUpperCase() !== "BEARER")
-        return false;
-    return true;
-};
-var verifyToken = function (token) {
-    if (!token)
-        return false;
-    return jsonwebtoken_1["default"].verify(token, secret, function (error) {
-        return !error;
-    });
-};
-var validateAuth = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var header, _a, type, token, isTypeValid, isTokenVerified, decodedToken, foundUser;
+var login = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, email, password, foundUser, areCredentialsValid, token, e_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                header = req.header("authorization");
-                if (!header)
-                    return [2 /*return*/, res.status(401).json({ authentication: "Missing header" })];
-                _a = header.split(" "), type = _a[0], token = _a[1];
-                isTypeValid = validateTokenType(type);
-                if (!isTypeValid)
-                    return [2 /*return*/, res.status(401).json({ authentication: "invalid token type" })];
-                isTokenVerified = verifyToken(token);
-                if (!isTokenVerified)
-                    return [2 /*return*/, res
-                            .status(401)
-                            .json({
-                            authentication: "unverified or missing token",
-                            isTokenVerified: token
+                _a = req.body, email = _a.email, password = _a.password;
+                if (!email) {
+                    return [2 /*return*/, res.status(400).json({
+                            status: "fail"
                         })];
-                decodedToken = jsonwebtoken_1["default"].decode(token);
-                console.log({ decoded: decodedToken });
-                return [4 /*yield*/, dbClient_1.dbClient.user.findFirst({
+                }
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 4, , 5]);
+                return [4 /*yield*/, dbClient_1.dbClient.user.findUnique({
                         where: {
-                            id: decodedToken.userId
+                            email: email
                         }
                     })];
-            case 1:
+            case 2:
                 foundUser = _b.sent();
-                if (foundUser != null)
-                    req.userId = foundUser.id;
-                console.log({ midleware: req.userId });
-                next();
-                return [2 /*return*/];
+                if (!foundUser) {
+                    return [2 /*return*/, res.status(401).json({
+                            status: "fail",
+                            message: "User not found"
+                        })];
+                }
+                return [4 /*yield*/, validateCredentials(password, foundUser)];
+            case 3:
+                areCredentialsValid = _b.sent();
+                if (!areCredentialsValid) {
+                    return [2 /*return*/, res.status(401).json({
+                            status: "fail",
+                            message: "Incorrect details"
+                        })];
+                }
+                token = generateJwt(foundUser.id);
+                return [2 /*return*/, res
+                        .status(200)
+                        .json({
+                        token: token,
+                        userId: foundUser.id,
+                        username: foundUser.username,
+                        status: "success"
+                    })];
+            case 4:
+                e_1 = _b.sent();
+                // console.error('error processing login', e.message)
+                return [2 /*return*/, res.status(500).json({
+                        status: "fail",
+                        message: "500 bad request"
+                    })];
+            case 5: return [2 /*return*/];
         }
     });
 }); };
-exports.validateAuth = validateAuth;
+exports.login = login;
+function generateJwt(userId) {
+    return jsonwebtoken_1["default"].sign({ userId: userId }, secret, {
+        expiresIn: process.env.JWT_EXPIRY
+    });
+}
+function validateCredentials(password, user) {
+    return __awaiter(this, void 0, void 0, function () {
+        var isPasswordValid;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!user) {
+                        return [2 /*return*/, false];
+                    }
+                    if (!password) {
+                        return [2 /*return*/, false];
+                    }
+                    return [4 /*yield*/, bcrypt_1["default"].compare(password, user.password)];
+                case 1:
+                    isPasswordValid = _a.sent();
+                    if (!isPasswordValid) {
+                        return [2 /*return*/, false];
+                    }
+                    return [2 /*return*/, true];
+            }
+        });
+    });
+}
 //# sourceMappingURL=auth.js.map

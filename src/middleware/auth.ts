@@ -51,7 +51,7 @@ export const validateAuth = async (
     },
   });
 
-  if (foundUser != null) res.locals.userId = foundUser.id;
-  console.log({ midleware: res.locals.userId });
+  if (foundUser != null) req.userId = foundUser.id;
+  console.log({ midleware: req.userId });
   next();
 };

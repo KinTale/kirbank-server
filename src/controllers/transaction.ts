@@ -3,14 +3,14 @@ import { dbClient } from "../utils/dbClient";
 import { CustomRequest } from "../utils/interface";
 
 export const getTransactions = async (req: CustomRequest, res: Response) => {
-  const userId = res.locals.userId
+  const userId = req.userId
   try {
     const transactionList = await dbClient.transaction.findMany({
       where: {
         userId: userId,
       },
     });
-   
+   console.log(transactionList)
     return res.json({ list: transactionList });
   } catch (e) {
     console.log(e);
@@ -19,7 +19,7 @@ export const getTransactions = async (req: CustomRequest, res: Response) => {
 
 export const addTransaction = async (req: CustomRequest, res: Response) => {
   const { title, amount, date , type} = req.body;
-  const userId = res.locals.userId
+ const userId = req.userId as number
   try {
     const createdTransaction = await dbClient.transaction.create({
       data: {
@@ -27,18 +27,18 @@ export const addTransaction = async (req: CustomRequest, res: Response) => {
         amount: amount,
         date: date,
         type: type,
-        userId: userId,
+        userId: userId
       },
     });
-
+console.log({data: createdTransaction})
     return res.status(200).json({
       status: "success",
       data: createdTransaction,
     });
   } catch (error) {
-    console.log(error, req.body);
+    console.log(error);
     return res.status(500).json({
-      status: "fail, server error", req: req.body
+      status: "fail, server error", 
     });
   }
 };

@@ -43,7 +43,7 @@ var getTransactions = function (req, res) { return __awaiter(void 0, void 0, voi
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                userId = req.userId;
+                userId = res.locals.userId;
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);

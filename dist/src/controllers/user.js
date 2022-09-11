@@ -35,71 +35,82 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
-exports.addTransaction = exports.getTransactions = void 0;
+exports.createUser = exports.getUser = void 0;
+var bcrypt_1 = __importDefault(require("bcrypt"));
+var email_validator_1 = __importDefault(require("email-validator"));
 var dbClient_1 = require("../utils/dbClient");
-var getTransactions = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var userId, transactionList, e_1;
+var getUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var memberList, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                userId = req.userId;
-                _a.label = 1;
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, dbClient_1.dbClient.user.findMany()];
             case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, dbClient_1.dbClient.transaction.findMany({
-                        where: {
-                            userId: userId
-                        }
-                    })];
+                memberList = _a.sent();
+                return [2 /*return*/, res.status(200).json({ data: memberList })];
             case 2:
-                transactionList = _a.sent();
-                console.log(transactionList);
-                return [2 /*return*/, res.json({ list: transactionList })];
-            case 3:
                 e_1 = _a.sent();
-                console.log(e_1);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                console.log("ERROR", e_1);
+                return [2 /*return*/, res.status(500).json("unable to get users")];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
-exports.getTransactions = getTransactions;
-var addTransaction = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, title, amount, date, type, userId, createdTransaction, error_1;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                _a = req.body, title = _a.title, amount = _a.amount, date = _a.date, type = _a.type;
-                userId = req.userId;
-                _b.label = 1;
+exports.getUser = getUser;
+var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var passwordHash, existingUser, createdUser, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, bcrypt_1["default"].hash(req.body.password, 8)];
             case 1:
-                _b.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, dbClient_1.dbClient.transaction.create({
-                        data: {
-                            title: title,
-                            amount: amount,
-                            date: date,
-                            type: type,
-                            userId: userId
+                passwordHash = _a.sent();
+                _a.label = 2;
+            case 2:
+                _a.trys.push([2, 5, , 6]);
+                return [4 /*yield*/, dbClient_1.dbClient.user.findUnique({
+                        where: {
+                            email: req.body.email
                         }
                     })];
-            case 2:
-                createdTransaction = _b.sent();
-                console.log({ data: createdTransaction });
+            case 3:
+                existingUser = _a.sent();
+                if (existingUser) {
+                    return [2 /*return*/, res.status(400).json({
+                            status: "fail, email already in use"
+                        })];
+                }
+                if (!email_validator_1["default"].validate(req.body.email)) {
+                    return [2 /*return*/, res.status(400).json({
+                            status: "fail, invalid email address"
+                        })];
+                }
+                return [4 /*yield*/, dbClient_1.dbClient.user.create({
+                        data: {
+                            username: req.body.username,
+                            email: req.body.email,
+                            password: passwordHash
+                        }
+                    })];
+            case 4:
+                createdUser = _a.sent();
                 return [2 /*return*/, res.status(200).json({
                         status: "success",
-                        data: createdTransaction
+                        data: createdUser
                     })];
-            case 3:
-                error_1 = _b.sent();
+            case 5:
+                error_1 = _a.sent();
                 console.log(error_1);
                 return [2 /*return*/, res.status(500).json({
                         status: "fail, server error"
                     })];
-            case 4: return [2 /*return*/];
+            case 6: return [2 /*return*/];
         }
     });
 }); };
-exports.addTransaction = addTransaction;
-//# sourceMappingURL=transaction.js.map
+exports.createUser = createUser;
+//# sourceMappingURL=user.js.map
