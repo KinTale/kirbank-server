@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 
 async function seed() {
   await createUsers();
+  await createBalances()
   await createTransactions();
   process.exit(0);
 }
@@ -30,6 +31,25 @@ const createUsers = async () => {
   });
 };
 
+const createBalances = async () => {
+  const balances = await dbClient.balance.createMany({
+    data: [
+      {
+        userId: 1,
+        balance: -599
+      },
+      {
+        userId: 2,
+        balance: -1049
+      },
+      {
+        userId: 3,
+        balance: -5550
+      },
+    ],
+  });
+};
+
 const createTransactions = async () => {
   const transactions = await dbClient.transaction.createMany({
     data: [
@@ -39,6 +59,7 @@ const createTransactions = async () => {
         date: new Date(1112133000000),
         type: "withdrawl",
         userId: 1,
+        // currentBalance: -550
       },
       {
         title: "Lidl",
@@ -46,6 +67,7 @@ const createTransactions = async () => {
         date: new Date(1661768000000),
         type: "withdrawl",
         userId: 1,
+        // currentBalance: -599
       },
       {
         title: "Macbook M2",
@@ -53,6 +75,7 @@ const createTransactions = async () => {
         date: new Date(1662768000000),
         type: "withdrawl",
         userId: 2,
+        // currentBalance: -999
       },
       {
         title: "Wireless Keyboard",
@@ -60,6 +83,7 @@ const createTransactions = async () => {
         date: new Date(1663768000000),
         type: "withdrawl",
         userId: 2,
+        // currentBalance: -1049
       },
       {
         title: "Gallon of honey",
@@ -67,6 +91,7 @@ const createTransactions = async () => {
         date: new Date(1665768000000),
         type: "withdrawl",
         userId: 3,
+        // currentBalance: -5550
       },
     ],
   });
