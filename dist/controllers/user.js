@@ -93,7 +93,12 @@ var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                         data: {
                             username: req.body.username,
                             email: req.body.email,
-                            password: passwordHash
+                            password: passwordHash,
+                            balance: {
+                                create: {
+                                    balance: 0
+                                }
+                            }
                         }
                     })];
             case 4:

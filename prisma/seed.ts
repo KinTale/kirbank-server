@@ -59,7 +59,7 @@ const createTransactions = async () => {
         date: new Date(1112133000000),
         type: "withdrawl",
         userId: 1,
-        // currentBalance: -550
+        currentBalance: -550
       },
       {
         title: "Lidl",
@@ -67,7 +67,7 @@ const createTransactions = async () => {
         date: new Date(1661768000000),
         type: "withdrawl",
         userId: 1,
-        // currentBalance: -599
+        currentBalance: -599
       },
       {
         title: "Macbook M2",
@@ -75,7 +75,7 @@ const createTransactions = async () => {
         date: new Date(1662768000000),
         type: "withdrawl",
         userId: 2,
-        // currentBalance: -999
+        currentBalance: -999
       },
       {
         title: "Wireless Keyboard",
@@ -83,7 +83,7 @@ const createTransactions = async () => {
         date: new Date(1663768000000),
         type: "withdrawl",
         userId: 2,
-        // currentBalance: -1049
+        currentBalance: -1049
       },
       {
         title: "Gallon of honey",
@@ -91,7 +91,7 @@ const createTransactions = async () => {
         date: new Date(1665768000000),
         type: "withdrawl",
         userId: 3,
-        // currentBalance: -5550
+        currentBalance: -5550
       },
     ],
   });
