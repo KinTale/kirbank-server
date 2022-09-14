@@ -66,7 +66,7 @@ var getTransactions = function (req, res) { return __awaiter(void 0, void 0, voi
 }); };
 exports.getTransactions = getTransactions;
 var addTransaction = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, description, amount, date, type, balanceAtTime, userId, createdTransaction, error_1;
+    var _a, description, amount, date, type, balanceAtTime, userId, createdTransaction, currentBalance, newBalance, updateBalance, error_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -74,31 +74,63 @@ var addTransaction = function (req, res) { return __awaiter(void 0, void 0, void
                 userId = req.userId;
                 _b.label = 1;
             case 1:
-                _b.trys.push([1, 3, , 4]);
+                _b.trys.push([1, 5, , 6]);
                 return [4 /*yield*/, dbClient_1.dbClient.transaction.create({
                         data: {
                             description: description,
                             amount: amount,
                             date: date,
                             type: type,
-                            userId: userId,
-                            balanceAtTime: balanceAtTime
+                            balanceAtTime: balanceAtTime,
+                            user: {
+                                connect: {
+                                    id: userId
+                                }
+                            }
                         }
                     })];
             case 2:
                 createdTransaction = _b.sent();
-                console.log({ data: createdTransaction });
+                return [4 /*yield*/, dbClient_1.dbClient.balance.findUnique({
+                        where: {
+                            userId: userId
+                        }
+                    })];
+            case 3:
+                currentBalance = _b.sent();
+                newBalance = void 0;
+                if (currentBalance) {
+                    if (type === "deposit")
+                        newBalance = currentBalance.balance + amount;
+                    if (type === "withdrawl")
+                        newBalance = currentBalance.balance - amount;
+                    else
+                        newBalance = currentBalance.balance;
+                }
+                return [4 /*yield*/, dbClient_1.dbClient.balance.update({
+                        where: {
+                            userId: userId
+                        },
+                        data: {
+                            balance: newBalance
+                        }
+                    })
+                    // console.log({data: createdTransaction})
+                ];
+            case 4:
+                updateBalance = _b.sent();
+                // console.log({data: createdTransaction})
                 return [2 /*return*/, res.status(200).json({
                         status: "success",
                         data: createdTransaction
                     })];
-            case 3:
+            case 5:
                 error_1 = _b.sent();
                 console.log(error_1);
                 return [2 /*return*/, res.status(500).json({
                         status: "fail, server error"
                     })];
-            case 4: return [2 /*return*/];
+            case 6: return [2 /*return*/];
         }
     });
 }); };

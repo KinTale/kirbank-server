@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import prisma from "@prisma/client";
@@ -46,7 +46,6 @@ export const login = async (req: Request, res: Response) => {
         status: "success",
       });
   } catch (e) {
-    // console.error('error processing login', e.message)
     return res.status(500).json({
       status: "fail",
       message: "500 bad request",

@@ -91,7 +91,6 @@ var login = function (req, res) { return __awaiter(void 0, void 0, void 0, funct
                     })];
             case 4:
                 e_1 = _b.sent();
-                // console.error('error processing login', e.message)
                 return [2 /*return*/, res.status(500).json({
                         status: "fail",
                         message: "500 bad request"

@@ -17,6 +17,7 @@ export const getTransactions = async (req: CustomRequest, res: Response) => {
   }
 };
 
+
 export const addTransaction = async (req: CustomRequest, res: Response) => {
   const { description, amount, date , type, balanceAtTime} = req.body;
  const userId = req.userId as number
@@ -27,11 +28,38 @@ export const addTransaction = async (req: CustomRequest, res: Response) => {
         amount: amount,
         date: date,
         type: type,
-        userId: userId,
-        balanceAtTime: balanceAtTime
+        balanceAtTime: balanceAtTime,
+        user: {
+          connect: {
+            id: userId
+          }
+        }
       },
     });
-console.log({data: createdTransaction})
+
+    const currentBalance = await dbClient.balance.findUnique({
+      where: {
+        userId: userId,
+      },
+    })
+
+    let newBalance 
+    if(currentBalance) {
+      if(type === "deposit") newBalance = currentBalance.balance + amount
+      if(type === "withdrawl") newBalance = currentBalance.balance - amount
+      else newBalance = currentBalance.balance
+    }
+
+    const updateBalance = await dbClient.balance.update({
+      where: {
+        userId: userId,
+      },
+      data: {
+        balance: newBalance
+      },
+    })
+    
+// console.log({data: createdTransaction})
     return res.status(200).json({
       status: "success",
       data: createdTransaction,

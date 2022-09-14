@@ -11,7 +11,6 @@ export const getBalance = async (req: CustomRequest, res: Response) => {
     });
     return res.status(200).json({ data: memberBalance });
   } catch (e) {
-    console.log("ERROR", e);
     return res.status(500).json("unable to get balance");
   }
 };

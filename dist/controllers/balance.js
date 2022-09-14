@@ -54,7 +54,6 @@ var getBalance = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                 return [2 /*return*/, res.status(200).json({ data: memberBalance })];
             case 2:
                 e_1 = _a.sent();
-                console.log("ERROR", e_1);
                 return [2 /*return*/, res.status(500).json("unable to get balance")];
             case 3: return [2 /*return*/];
         }
