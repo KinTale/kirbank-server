@@ -66,11 +66,11 @@ var getTransactions = function (req, res) { return __awaiter(void 0, void 0, voi
 }); };
 exports.getTransactions = getTransactions;
 var addTransaction = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, title, amount, date, type, userId, createdTransaction, error_1;
+    var _a, title, amount, date, type, balanceAtTime, userId, createdTransaction, error_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                _a = req.body, title = _a.title, amount = _a.amount, date = _a.date, type = _a.type;
+                _a = req.body, title = _a.title, amount = _a.amount, date = _a.date, type = _a.type, balanceAtTime = _a.balanceAtTime;
                 userId = req.userId;
                 _b.label = 1;
             case 1:
@@ -81,7 +81,8 @@ var addTransaction = function (req, res) { return __awaiter(void 0, void 0, void
                             amount: amount,
                             date: date,
                             type: type,
-                            userId: userId
+                            userId: userId,
+                            balanceAtTime: balanceAtTime
                         }
                     })];
             case 2:

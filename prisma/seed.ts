@@ -54,44 +54,44 @@ const createTransactions = async () => {
   const transactions = await dbClient.transaction.createMany({
     data: [
       {
-        title: "Uniqlo",
+        description: "Uniqlo",
         amount: 550,
         date: new Date(1112133000000),
         type: "withdrawl",
         userId: 1,
-        currentBalance: -550
+        balanceAtTime: -550
       },
       {
-        title: "Lidl",
+        description: "Lidl",
         amount: 49,
         date: new Date(1661768000000),
         type: "withdrawl",
         userId: 1,
-        currentBalance: -599
+        balanceAtTime: -599
       },
       {
-        title: "Macbook M2",
+        description: "Macbook M2",
         amount: 999,
         date: new Date(1662768000000),
         type: "withdrawl",
         userId: 2,
-        currentBalance: -999
+        balanceAtTime: -999
       },
       {
-        title: "Wireless Keyboard",
+        description: "Wireless Keyboard",
         amount: 50,
         date: new Date(1663768000000),
         type: "withdrawl",
         userId: 2,
-        currentBalance: -1049
+        balanceAtTime: -1049
       },
       {
-        title: "Gallon of honey",
+        description: "Gallon of honey",
         amount: 5550,
         date: new Date(1665768000000),
         type: "withdrawl",
         userId: 3,
-        currentBalance: -5550
+        balanceAtTime: -5550
       },
     ],
   });

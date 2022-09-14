@@ -18,7 +18,7 @@ export const getTransactions = async (req: CustomRequest, res: Response) => {
 };
 
 export const addTransaction = async (req: CustomRequest, res: Response) => {
-  const { title, amount, date , type} = req.body;
+  const { title, amount, date , type, balanceAtTime} = req.body;
  const userId = req.userId as number
   try {
     const createdTransaction = await dbClient.transaction.create({
@@ -27,7 +27,8 @@ export const addTransaction = async (req: CustomRequest, res: Response) => {
         amount: amount,
         date: date,
         type: type,
-        userId: userId
+        userId: userId,
+        balanceAtTime: balanceAtTime
       },
     });
 console.log({data: createdTransaction})
