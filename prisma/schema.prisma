@@ -21,9 +21,10 @@ model User {
 }
 
 model Balance {
-  id          Int         @id @default(autoincrement())
-  user        User        @relation(fields: [userId], references: [id])
-  userId      Int         @unique
+  id          Int           @id @default(autoincrement())
+  user        User          @relation(fields: [userId], references: [id])
+  userId      Int           @unique
+  // transaction Transaction[]
   balance     Int         
 }
 
@@ -35,5 +36,7 @@ model Transaction {
   type           String
   user           User     @relation(fields: [userId], references: [id])
   userId         Int
+  // balance        Balance  @relation(fields: [balanceId], references: [id])
+  // balanceId      Int
   balanceAtTime  Int
 }

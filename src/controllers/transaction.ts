@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { dbClient } from "../utils/dbClient";
 import { CustomRequest } from "../utils/interface";
 
@@ -18,12 +18,12 @@ export const getTransactions = async (req: CustomRequest, res: Response) => {
 };
 
 export const addTransaction = async (req: CustomRequest, res: Response) => {
-  const { title, amount, date , type, balanceAtTime} = req.body;
+  const { description, amount, date , type, balanceAtTime} = req.body;
  const userId = req.userId as number
   try {
     const createdTransaction = await dbClient.transaction.create({
       data: {
-        title: title,
+        description: description,
         amount: amount,
         date: date,
         type: type,

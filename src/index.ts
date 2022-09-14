@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from 'dotenv'
 import authRouter from './routes/auth'
 import userRouter from './routes/user'
+import balanceRouter from './routes/balance'
 import transactionRouter from './routes/transaction'
 
 dotenv.config()
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/', authRouter)
 app.use('/user', userRouter)
+app.use('/balance', balanceRouter)
 app.use('/transaction', transactionRouter)
 
 app.get('/', (req:Request, res: Response)=>{

@@ -36,71 +36,29 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.addTransaction = exports.getTransactions = void 0;
+exports.getBalance = void 0;
 var dbClient_1 = require("../utils/dbClient");
-var getTransactions = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var userId, transactionList, e_1;
+var getBalance = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var memberBalance, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                userId = req.userId;
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, dbClient_1.dbClient.transaction.findMany({
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, dbClient_1.dbClient.balance.findUnique({
                         where: {
-                            userId: userId
+                            userId: req.userId
                         }
                     })];
-            case 2:
-                transactionList = _a.sent();
-                console.log(transactionList);
-                return [2 /*return*/, res.json({ list: transactionList })];
-            case 3:
-                e_1 = _a.sent();
-                console.log(e_1);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
-        }
-    });
-}); };
-exports.getTransactions = getTransactions;
-var addTransaction = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, description, amount, date, type, balanceAtTime, userId, createdTransaction, error_1;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                _a = req.body, description = _a.description, amount = _a.amount, date = _a.date, type = _a.type, balanceAtTime = _a.balanceAtTime;
-                userId = req.userId;
-                _b.label = 1;
             case 1:
-                _b.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, dbClient_1.dbClient.transaction.create({
-                        data: {
-                            description: description,
-                            amount: amount,
-                            date: date,
-                            type: type,
-                            userId: userId,
-                            balanceAtTime: balanceAtTime
-                        }
-                    })];
+                memberBalance = _a.sent();
+                return [2 /*return*/, res.status(200).json({ data: memberBalance })];
             case 2:
-                createdTransaction = _b.sent();
-                console.log({ data: createdTransaction });
-                return [2 /*return*/, res.status(200).json({
-                        status: "success",
-                        data: createdTransaction
-                    })];
-            case 3:
-                error_1 = _b.sent();
-                console.log(error_1);
-                return [2 /*return*/, res.status(500).json({
-                        status: "fail, server error"
-                    })];
-            case 4: return [2 /*return*/];
+                e_1 = _a.sent();
+                console.log("ERROR", e_1);
+                return [2 /*return*/, res.status(500).json("unable to get balance")];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
-exports.addTransaction = addTransaction;
-//# sourceMappingURL=transaction.js.map
+exports.getBalance = getBalance;
+//# sourceMappingURL=balance.js.map
