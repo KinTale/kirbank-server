@@ -43,7 +43,6 @@ export const validateAuth = async (
       });
 
   const decodedToken = jwt.decode(token) as jwt.JwtPayload;
-  console.log({ decoded: decodedToken });
   
   const foundUser = await dbClient.user.findFirst({
     where: {
@@ -52,6 +51,6 @@ export const validateAuth = async (
   });
 
   if (foundUser != null) req.userId = foundUser.id;
-  console.log({ midleware: req.userId });
+
   next();
 };

@@ -50,6 +50,9 @@ var getTransactions = function (req, res) { return __awaiter(void 0, void 0, voi
                 return [4 /*yield*/, dbClient_1.dbClient.transaction.findMany({
                         where: {
                             userId: userId
+                        },
+                        orderBy: {
+                            date: 'desc'
                         }
                     })];
             case 2:
@@ -66,22 +69,50 @@ var getTransactions = function (req, res) { return __awaiter(void 0, void 0, voi
 }); };
 exports.getTransactions = getTransactions;
 var addTransaction = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, description, amount, date, type, balanceAtTime, userId, createdTransaction, currentBalance, newBalance, updateBalance, error_1;
+    var _a, description, amount, date, type, userId, updateAllFollowingTransations, transactionList, previousTransaction, i, newBalanceAtTime, createdTransaction, currentBalance, newBalance, updateBalance, error_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                _a = req.body, description = _a.description, amount = _a.amount, date = _a.date, type = _a.type, balanceAtTime = _a.balanceAtTime;
+                _a = req.body, description = _a.description, amount = _a.amount, date = _a.date, type = _a.type;
                 userId = req.userId;
                 _b.label = 1;
             case 1:
-                _b.trys.push([1, 5, , 6]);
+                _b.trys.push([1, 6, , 7]);
+                updateAllFollowingTransations = function () {
+                    console.log("Updated Transactions");
+                    return;
+                };
+                return [4 /*yield*/, dbClient_1.dbClient.transaction.findMany({
+                        where: {
+                            userId: userId
+                        },
+                        orderBy: {
+                            date: 'desc'
+                        }
+                    })];
+            case 2:
+                transactionList = _b.sent();
+                previousTransaction = void 0;
+                console.log(date);
+                console.log(Date.parse(date));
+                for (i = 0; i < transactionList.length; i++) {
+                    console.log(transactionList[i].date);
+                    if (transactionList[i].date <= date) {
+                        console.log("checked date", transactionList[i].date);
+                        previousTransaction = transactionList[i].balanceAtTime;
+                        if (i !== 0)
+                            updateAllFollowingTransations();
+                        break;
+                    }
+                }
+                newBalanceAtTime = 0;
                 return [4 /*yield*/, dbClient_1.dbClient.transaction.create({
                         data: {
                             description: description,
                             amount: amount,
                             date: date,
                             type: type,
-                            balanceAtTime: balanceAtTime,
+                            balanceAtTime: newBalanceAtTime,
                             user: {
                                 connect: {
                                     id: userId
@@ -89,14 +120,14 @@ var addTransaction = function (req, res) { return __awaiter(void 0, void 0, void
                             }
                         }
                     })];
-            case 2:
+            case 3:
                 createdTransaction = _b.sent();
                 return [4 /*yield*/, dbClient_1.dbClient.balance.findUnique({
                         where: {
                             userId: userId
                         }
                     })];
-            case 3:
+            case 4:
                 currentBalance = _b.sent();
                 newBalance = void 0;
                 if (currentBalance) {
@@ -104,8 +135,6 @@ var addTransaction = function (req, res) { return __awaiter(void 0, void 0, void
                         newBalance = currentBalance.balance + amount;
                     if (type === "withdrawl")
                         newBalance = currentBalance.balance - amount;
-                    else
-                        newBalance = currentBalance.balance;
                 }
                 return [4 /*yield*/, dbClient_1.dbClient.balance.update({
                         where: {
@@ -114,23 +143,20 @@ var addTransaction = function (req, res) { return __awaiter(void 0, void 0, void
                         data: {
                             balance: newBalance
                         }
-                    })
-                    // console.log({data: createdTransaction})
-                ];
-            case 4:
+                    })];
+            case 5:
                 updateBalance = _b.sent();
-                // console.log({data: createdTransaction})
                 return [2 /*return*/, res.status(200).json({
                         status: "success",
                         data: createdTransaction
                     })];
-            case 5:
+            case 6:
                 error_1 = _b.sent();
                 console.log(error_1);
                 return [2 /*return*/, res.status(500).json({
                         status: "fail, server error"
                     })];
-            case 6: return [2 /*return*/];
+            case 7: return [2 /*return*/];
         }
     });
 }); };

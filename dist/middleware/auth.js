@@ -78,7 +78,6 @@ var validateAuth = function (req, res, next) { return __awaiter(void 0, void 0, 
                             isTokenVerified: token
                         })];
                 decodedToken = jsonwebtoken_1["default"].decode(token);
-                console.log({ decoded: decodedToken });
                 return [4 /*yield*/, dbClient_1.dbClient.user.findFirst({
                         where: {
                             id: decodedToken.userId
@@ -88,7 +87,6 @@ var validateAuth = function (req, res, next) { return __awaiter(void 0, void 0, 
                 foundUser = _b.sent();
                 if (foundUser != null)
                     req.userId = foundUser.id;
-                console.log({ midleware: req.userId });
                 next();
                 return [2 /*return*/];
         }

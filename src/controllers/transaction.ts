@@ -9,6 +9,9 @@ export const getTransactions = async (req: CustomRequest, res: Response) => {
       where: {
         userId: userId,
       },
+      orderBy: {
+        date: 'desc'
+      }
     });
    console.log(transactionList)
     return res.json({ list: transactionList });
@@ -19,16 +22,53 @@ export const getTransactions = async (req: CustomRequest, res: Response) => {
 
 
 export const addTransaction = async (req: CustomRequest, res: Response) => {
-  const { description, amount, date , type, balanceAtTime} = req.body;
+  const { description, amount, date , type } = req.body;
  const userId = req.userId as number
+
   try {
+    const updateAllFollowingTransations = () => {
+      console.log("Updated Transactions")
+      return
+    }
+
+    const transactionList = await dbClient.transaction.findMany({
+      where: {
+        userId: userId,
+      },
+      orderBy: {
+        date: 'desc'
+      }
+    });
+
+    let previousTransaction
+
+    console.log(date)
+    console.log(Date.parse(date))
+
+    for (let i = 0; i < transactionList.length; i++) {
+      console.log(transactionList[i].date)
+      if(transactionList[i].date <= date) {
+        console.log("checked date", transactionList[i].date)
+        previousTransaction = transactionList[i].balanceAtTime
+        if(i !== 0) updateAllFollowingTransations()
+        break
+      }
+    }
+
+
+    let newBalanceAtTime = 0
+    // if(previousTransaction) {
+    //   if(type === "deposit") newBalanceAtTime = previousTransaction + amount
+    //   if(type === "withdrawl") newBalanceAtTime = previousTransaction - amount
+    // }
+
     const createdTransaction = await dbClient.transaction.create({
       data: {
         description: description,
         amount: amount,
         date: date,
         type: type,
-        balanceAtTime: balanceAtTime,
+        balanceAtTime: newBalanceAtTime,
         user: {
           connect: {
             id: userId
@@ -47,7 +87,6 @@ export const addTransaction = async (req: CustomRequest, res: Response) => {
     if(currentBalance) {
       if(type === "deposit") newBalance = currentBalance.balance + amount
       if(type === "withdrawl") newBalance = currentBalance.balance - amount
-      else newBalance = currentBalance.balance
     }
 
     const updateBalance = await dbClient.balance.update({
@@ -58,8 +97,7 @@ export const addTransaction = async (req: CustomRequest, res: Response) => {
         balance: newBalance
       },
     })
-    
-// console.log({data: createdTransaction})
+  
     return res.status(200).json({
       status: "success",
       data: createdTransaction,
