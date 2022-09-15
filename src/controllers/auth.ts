@@ -6,7 +6,7 @@ import { dbClient } from "../utils/dbClient";
 
 const secret = process.env.JWT_SECRET;
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response) : Promise<Response> => {
   const { email, password } = req.body;
   if (!email) {
     return res.status(400).json({
